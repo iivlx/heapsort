@@ -71,15 +71,6 @@ def draw_heap(canvas, heap, start_x, start_y, max_width, height, node_radius=20)
 
     draw_node(start_x, start_y, 0, 0)
 
-#def draw_sequence(canvas, sequence, x_start, y_start, box_width, box_height):
-#    canvas.delete("all")  # Clear the canvas for redrawing the sequence
-#    # Drawing logic for sequence and sorted_sequence##
-
-
-#def draw_heap(canvas, heap, start_x, start_y, max_width, height, node_radius=20):
-#    canvas.delete("all")  # Clear the canvas for redrawing the heap
-#    # Drawing logic for heap
-
 def update_visualization(value=None):
     if value: sorted_sequence.append(value)
     draw_heap(heap_canvas, heap, *heap_draw_params)
