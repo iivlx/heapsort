@@ -5,14 +5,15 @@ import math
 # Global variables for GUI elements and data structures
 root = tk.Tk()
 heap = []
-sequence = [5, 3, 17, 10, 84, 19, 6, 22, 9, 4]
+#sequence = [5, 3, 17, 10, 84, 19, 6, 22, 9, 4]
+sequence = [1, 2, 3, 17, 20 , 20, 48, 12, 23 ,41 ,12 ,141 , 4, 5, 6, 55 ,66, 84, 82, 74,8, 9, 14, 81, 17, 64, 4, 7, 8]
 sorted_sequence = []
 
 # Initialize canvas dimensions and other parameters
-width = 800
+width = 1200
 height = 600
-heap_canvas = tk.Canvas(root, width=width, height=height // 2, bg='white')
-sequence_canvas = tk.Canvas(root, width=width, height=height // 2, bg='white')
+heap_canvas = tk.Canvas(root, width=width, height=height * (3/4), bg='white')
+sequence_canvas = tk.Canvas(root, width=width, height=height * (1/4), bg='white')
 heap_draw_params = (width // 2, 20, width - 100, height // 3)
 sequence_draw_params = (20, 10, 50, 20)
 
@@ -47,7 +48,8 @@ def draw_heap(canvas, heap, start_x, start_y, max_width, height, node_radius=20)
     if n == 0:
         return
     max_level = math.floor(math.log2(n + 1))
-    x_spacing = max_width // (2 ** max_level)
+    min_spacing_x = max_width // (n)  # Calculate the minimum required spacing
+    x_spacing = max(min_spacing_x, (max_width / (max_level + 1)))  # Use the larger of the two spacings
     y_spacing = height // (max_level + 1)
 
     def draw_node(x, y, level, index):
