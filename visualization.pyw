@@ -1,12 +1,14 @@
 import tkinter as tk
 from heapsort import add_to_heap, remove_min_from_heap
 import math
+import sys
 
 # Global variables for GUI elements and data structures
 root = tk.Tk()
 heap = []
 #sequence = [5, 3, 17, 10, 84, 19, 6, 22, 9, 4]
-sequence = [1, 2, 3, 17, 20 , 20, 48, 12, 23 ,41 ,12 ,141 , 4, 5, 6, 55 ,66, 84, 82, 74,8, 9, 14, 81, 17, 64, 4, 7, 8]
+sequence = []
+default_sequence = [1, 2, 3, 17, 20 , 20, 48, 12, 23 ,41 ,12 ,141 , 4, 5, 6, 55 ,66, 84, 82, 74,8, 9, 14, 81, 17, 64, 4, 7, 8]
 sorted_sequence = []
 
 # Initialize canvas dimensions and other parameters
@@ -14,7 +16,7 @@ width = 1200
 height = 600
 heap_canvas = tk.Canvas(root, width=width, height=height * (3/4), bg='white')
 sequence_canvas = tk.Canvas(root, width=width, height=height * (1/4), bg='white')
-heap_draw_params = (width // 2, 20, width - 100, height // 3)
+heap_draw_params = (width // 2, 40, width - 100, height // 3)
 sequence_draw_params = (20, 10, 50, 20)
 
 # Callback function to control step progression
@@ -82,7 +84,7 @@ def update_visualization(value=None, highlight_index=-1):
     wait_for_space_press(root)
 
 def main():
-    global heap, sequence, sorted_sequence
+    global heap, sequence, default_sequence, sorted_sequence
     heap_canvas.pack()
     sequence_canvas.pack()
     root.title("Heap Sort Visualization")
@@ -98,5 +100,20 @@ def main():
 
     root.mainloop()
 
+def read_file(filename):
+    global sequence
+    try:
+        with open(filename, 'r') as file:
+            content = file.read()
+            sequence = [int(size) for size in content.strip().split(' ')]
+    except Exception as e:
+        print("Invalid file name...")
+        exit(1)
+
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        filename = sys.argv[1]
+        read_file(filename)
+    else:
+        sequence = default_sequence
     main()
