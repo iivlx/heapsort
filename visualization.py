@@ -34,7 +34,7 @@ def wait_for_space_press(root):
 root.bind_all('<space>', on_space_press)
 
 # Visualization functions
-def draw_sequence(canvas, sequence, x_start, y_start, box_width, box_height):
+def draw_sequence(canvas, sequence, x_start, y_start, box_width, box_height, highlight_index=-1):
     canvas.delete("all")  # Clear the canvas for redrawing the sequence
     x = x_start
     for value in sequence:
@@ -42,12 +42,15 @@ def draw_sequence(canvas, sequence, x_start, y_start, box_width, box_height):
         canvas.create_text(x + box_width / 2, y_start + box_height / 2, text=str(value))
         x += box_width
 
-def draw_heap(canvas, heap, start_x, start_y, max_width, height, node_radius=20):
+def draw_heap(canvas, heap, start_x, start_y, max_width, height, node_radius=20, highlight_index=-1):
     canvas.delete("all")  # Clear the canvas for redrawing the heap
     n = len(heap)
     if n == 0:
         return
-    max_level = math.floor(math.log2(n + 1))
+    if highlight_index == -1:
+        highlight_index = len(heap)-1
+    
+    max_level = math.floor(math.log2(n))
     min_spacing_x = max_width // (n)  # Calculate the minimum required spacing
     x_spacing = max(min_spacing_x, (max_width / (max_level + 1)))  # Use the larger of the two spacings
     y_spacing = height // (max_level + 1)
@@ -59,7 +62,8 @@ def draw_heap(canvas, heap, start_x, start_y, max_width, height, node_radius=20)
             left_child_index = 2 * index + 1
             right_child_index = 2 * index + 2
 
-            canvas.create_oval(x - node_radius, y - node_radius, x + node_radius, y + node_radius, fill="skyblue")
+            fill_color = "yellow" if index == highlight_index else "skyblue"
+            canvas.create_oval(x - node_radius, y - node_radius, x + node_radius, y + node_radius, fill=fill_color)
             canvas.create_text(x, y, text=str(heap[index]))
 
             if left_child_index < n:
@@ -71,10 +75,10 @@ def draw_heap(canvas, heap, start_x, start_y, max_width, height, node_radius=20)
 
     draw_node(start_x, start_y, 0, 0)
 
-def update_visualization(value=None):
+def update_visualization(value=None, highlight_index=-1):
     if value: sorted_sequence.append(value)
-    draw_heap(heap_canvas, heap, *heap_draw_params)
-    draw_sequence(sequence_canvas, sequence + sorted_sequence, *sequence_draw_params)
+    draw_heap(heap_canvas, heap, *heap_draw_params, highlight_index=highlight_index)
+    draw_sequence(sequence_canvas, sequence + sorted_sequence, *sequence_draw_params, highlight_index=highlight_index)
     wait_for_space_press(root)
 
 def main():
